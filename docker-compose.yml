@@ -1,0 +1,35 @@
+
+services:
+  linux-terminal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: lucity-linux-terminal
+
+    ports:
+      - "127.0.0.1:7681:7681"
+
+    environment:
+      PORT: "7681"
+      TERMINAL_USER: "${TERMINAL_USER}"
+      TERMINAL_PASSWORD: "${TERMINAL_PASSWORD}"
+
+    restart: unless-stopped
+
+    read_only: true
+
+    tmpfs:
+      - /tmp
+      - /workspace:uid=10001,gid=10001,mode=0700
+
+    security_opt:
+      - no-new-privileges:true
+
+    cap_drop:
+      - ALL
+
+    pids_limit: 128
+
+    mem_limit: 1g
+    cpus: 1.0
